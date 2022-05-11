@@ -55,7 +55,7 @@ public static class VectorOperations
     {
         return a / a.Length();
     }
-    public static double dot(Vector a,Vector b)
+    public static double Dot(Vector a,Vector b)
     {
         return a.X * b.X + a.Y * b.Y + a.Z * b.Z;
     }
@@ -69,16 +69,16 @@ public class Renderer
     public double ColorDepth;
     public int ImageHeight;
     public int ImageWidth;
-    public Renderer(string filename,int image_height = 256,int image_width = 256,double color_depth = 255.99)
+    public Renderer(string filename,int imageHeight = 256,int imageWidth = 256,double colorDepth = 255.99)
     {
         _filename = filename;
-        ColorDepth = color_depth;
-        ImageHeight = image_height;
-        ImageWidth = image_width;
+        ColorDepth = colorDepth;
+        ImageHeight = imageHeight;
+        ImageWidth = imageWidth;
 
         StreamWriter w = File.AppendText(filename);
         _w = w;
-        w.WriteLine($"P3\n{image_height} {image_width}\n{(int)color_depth}");
+        w.WriteLine($"P3\n{imageWidth} {imageHeight}\n{(int)colorDepth}");
     }
 
     public void Delete()
@@ -106,6 +106,7 @@ public class Renderer
     {
         _w.WriteLine($"{(int)(a.X * ColorDepth)} {(int)(a.Y*ColorDepth)} {(int)(a.Z * ColorDepth)}");
     }
+    
     
 }
 
