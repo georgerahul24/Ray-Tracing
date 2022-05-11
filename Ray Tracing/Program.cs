@@ -30,14 +30,14 @@ Vector PixelColor(Ray r)
     return (1.0 - t) * baseColor1 + t * baseColor2;
 }
 
-Vector sphereCenter = new Vector(0, 0, -1);
-
-
-
+HittableList list = new();
+list.Add(new Sphere(new Vector(0, -0.3, -1), 0.1));
+list.Add(new Sphere(new Vector(0, 0.4, -1), 0.5));
+list.Add(new Sphere(new Vector(0, 0, -1), 0.2));
 Vector PixelColorSphere(Ray r)
 {
     
-    if (new Sphere(new(0,0,-1),0.5).Hit(r,-10,10,new ()))
+    if (list.Hit(r, -10, 10, new hitrecord()))
     {
         return new(0,1,0);
     }

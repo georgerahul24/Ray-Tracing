@@ -7,6 +7,7 @@ public  class Sphere:Hittable
 {
     private Vector center,origin;
     private double radius;
+    public hitrecord rec;
     public Sphere(Vector center, double radius, Vector? orgin = null)
     {
         this.center = center;
@@ -16,7 +17,7 @@ public  class Sphere:Hittable
     
     public bool Hit(Ray r, double t_min, double t_max, hitrecord rec)
     {//t_min and t_max are the min and max value that t can have when solved
-        
+        this.rec = rec;
         Vector relativeCenter = r.org - center;
         var a = VectorOperations.Dot(r.dir, r.dir);
         var b = 2.0 * VectorOperations.Dot(relativeCenter, r.dir);
