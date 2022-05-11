@@ -19,7 +19,7 @@ public class Vector
         return res;
     }
 
-    public static Vector operator -(Vector a, Vector b)
+    public static Vector operator -(Vector a, Vector? b)
     {
         Vector res = new Vector(a.Point[0] - b.Point[0], a.Point[1] - b.Point[1], a.Point[2] - b.Point[2]);
         return res;
@@ -30,25 +30,38 @@ public class Vector
         Vector res = new Vector(a.Point[0]*t, a.Point[1] *t, a.Point[2]*t);
         return res;
     }
-    public static Vector operator /(Vector a,double t)
+    public static Vector operator *(double t,Vector a)
     {
-        Vector res = new(a.X/t,a.Y/t,a.Z/t);
+        Vector res = new Vector(a.Point[0]*t, a.Point[1] *t, a.Point[2]*t);
         return res;
     }
-
-    public double Length()
-    {
-        return Math.Sqrt(Math.Pow(X,2)+Math.Pow(Y,2)+Math.Pow(Z,2));
-    }
-
+    public static Vector operator /(Vector a,double t)=> (1/t)*a;
     
-    public override string ToString()
+    public static Vector operator *(Vector a ,Vector b) //Dot Product
     {
-        return $"{X}i + {Y}j + {Z}k";
+        Vector res = new (a.X*b.X,a.Y*b.Y,a.Z*b.Z);
+        return res;
     }
+    public double Length()=>Math.Sqrt(Math.Pow(X,2)+Math.Pow(Y,2)+Math.Pow(Z,2));
+   
+    
+    public override string ToString()=>$"{X}i + {Y}j + {Z}k";
     
 }
 
+public static class VectorOperations
+{
+    public static Vector UnitVector(Vector a)
+    {
+        return a / a.Length();
+    }
+    public static double dot(Vector a,Vector b)
+    {
+        return a.X * b.X + a.Y * b.Y + a.Z * b.Z;
+    }
+    
+    
+}
 public class Renderer
 {
     private StreamWriter _w;
@@ -88,12 +101,18 @@ public class Renderer
     {
         _w.WriteLine($"{(int)(r * ColorDepth)} {(int)(g*ColorDepth)} {(int)(b * ColorDepth)}");
     }
+    
+    public void WriteColor(Vector a)
+    {
+        _w.WriteLine($"{(int)(a.X * ColorDepth)} {(int)(a.Y*ColorDepth)} {(int)(a.Z * ColorDepth)}");
+    }
+    
 }
 
 public class Ray
 //Ray => A +tB where A is orgin, t is a variable and B is the direction of the vector
 {
-    private Vector org, dir;
+    public Vector org, dir;
     public Ray(Vector org, Vector dir)
     {
         this.org = org;
@@ -103,5 +122,14 @@ public class Ray
     public Vector at(double t)
     {
         return org +  dir*t;
+    } 
+    
+}
+
+public class Color:Vector
+{
+    public Color(double x, double y, double z) : base(x, y, z)
+    {
     }
 }
+
