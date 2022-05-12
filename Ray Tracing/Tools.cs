@@ -43,6 +43,7 @@ public class Vector
         return res;
     }
     public double Length()=>Math.Sqrt(Math.Pow(X,2)+Math.Pow(Y,2)+Math.Pow(Z,2));
+    public double LengthSquared()=>(Math.Pow(X,2)+Math.Pow(Y,2)+Math.Pow(Z,2));
    
     
     public override string ToString()=>$"{X}i + {Y}j + {Z}k";

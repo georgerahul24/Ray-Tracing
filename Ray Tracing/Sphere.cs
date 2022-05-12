@@ -5,9 +5,9 @@ namespace Ray_Tracing;
 
 public  class Sphere:Hittable
 {
-    private Vector center,origin;
-    private double radius;
-    public hitrecord rec;
+    public Vector center,origin;
+    public double radius;
+    
     public Sphere(Vector center, double radius, Vector? orgin = null)
     {
         this.center = center;
@@ -15,41 +15,34 @@ public  class Sphere:Hittable
         this.origin = orgin ?? new Vector(0, 0, 0);
     }
     
-    public bool Hit(Ray r, double t_min, double t_max, hitrecord rec)
+    public bool Hit(Ray r, double t_min, double t_max, ref hitrecord rec)
+    //if rec is not passed by reference, new instance is created and thus rec's vlaue is not reflected properly to the function that calls it.
     {//t_min and t_max are the min and max value that t can have when solved
-        this.rec = rec;
-        Vector relativeCenter = r.org - center;
-        var a = VectorOperations.Dot(r.dir, r.dir);
-        var b = 2.0 * VectorOperations.Dot(relativeCenter, r.dir);
-        var c = VectorOperations.Dot(relativeCenter, relativeCenter) - (radius * radius);
-        var discriminant = (b * b) - (4 * a * c);
         
-        
+        Vector oc = r.org - center;
+        double a = r.dir.LengthSquared();
+        double half_b = VectorOperations.Dot(oc, r.dir);
+        double c = oc.LengthSquared() - radius*radius;
 
-        if (discriminant < 0)
-        {
-            return false;
-        }
-        
-        var root = (-b - discriminant)/2*a;
+        double discriminant = half_b*half_b - a*c;
+        if (discriminant < 0) return false;
+        double sqrtd = Math.Sqrt(discriminant);
 
-        if (root < t_min || t_max < root)
-        {
-            root = ((-b + discriminant) / 2 * a) / a; //checking the second root
+        // Find the nearest root that lies in the acceptable range.
+        double root = (-half_b - sqrtd) / a;
+        if (root < t_min || t_max < root) {
+            root = (-half_b + sqrtd) / a;
             if (root < t_min || t_max < root)
-                return false; //if still root is not in the limits of t, we do not consider the root
+                return false;
         }
-/*
-        if (discriminant < 0)
-        {
-            return false;
-        }
-        */
 
         rec.t = root;
         rec.point = r.at(rec.t);
-        rec.normal = (rec.point - center) / radius;
+        //rec.normal = (rec.point - center) / radius; TODO: is this part needed?
+        Vector outward_normal = (rec.point - center) / radius;
+        rec.set_face_normal(r, outward_normal);
 
-        return true;    
+        return true;
+     
     }
 }
