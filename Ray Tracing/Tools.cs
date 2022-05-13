@@ -94,7 +94,8 @@ public class Renderer
         _w.WriteLine($"{(int)(r * ColorDepth)} {(int)(g * ColorDepth)} {(int)(b * ColorDepth)}");
     }
 
-    private double Clamp(double x, double min = 0.00, double max = 0.999) {
+    private double Clamp(double x, double min = 0.00, double max = 0.999)
+    {
         if (x < min) return min;
         if (x > max) return max;
         return x;
@@ -103,7 +104,16 @@ public class Renderer
     public void WriteColor(Vector a, double SamplesPerPixel)
     {
         //Color/SamplesPerPixel gives the average colour for anti-aliasing
-        _w.WriteLine($"{(int)(Clamp(a.X/SamplesPerPixel) * ColorDepth)} {(int)(Clamp(a.Y/SamplesPerPixel) * ColorDepth)} {(int)(Clamp(a.Z/SamplesPerPixel) * ColorDepth)}");
+        
+        double scale = 1 / SamplesPerPixel;
+        // using gamma-2 correction
+        double r = Math.Sqrt(scale * a.X);
+        double g = Math.Sqrt(scale * a.Y);
+        double b = Math.Sqrt(scale * a.Z);
+        
+        
+        _w.WriteLine(
+            $"{(int)(Clamp(r) * (int)(ColorDepth+1))} {(int)(Clamp(g) * (int)(ColorDepth+1))} {(int)(Clamp(b) * (int)(ColorDepth+1))}");
     }
 
     public void Flush()
@@ -135,11 +145,20 @@ public class Color : Vector
     {
     }
 }
-public class RandomTools{
-    public readonly Random Random = new Random();
-public double RandomNumber(double minimum, double maximum)
+
+public  class RandomTools
 {
-    
-    return Random.NextDouble() * (maximum - minimum) + minimum;
-}
+  
+    private static Random _random = new();
+    public static Vector RandomInUnitSphere()
+    {
+        while (true)
+        {
+            Vector p = new(_random.Next(-1, 1), _random.Next(-1, 1), _random.Next(-1, 1));
+            if (p.LengthSquared()>=1)continue;
+            return p;
+
+
+        }
+    }
 }
