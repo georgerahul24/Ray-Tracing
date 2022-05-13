@@ -72,27 +72,24 @@ public static class VectorTools
 public class Renderer
 {
     private StreamWriter _w;
-    private string _filename;
+    private int SamplePerPixels;
+    private List<Vector> cacheList = new();
     public double ColorDepth;
-    public int ImageHeight;
-    public int ImageWidth;
+   
 
-    public Renderer(string filename, int imageHeight = 256, int imageWidth = 256, double colorDepth = 255.99)
+    public Renderer(ref string filename, int imageHeight = 256, int imageWidth = 256, double colorDepth = 255.99,int samplePerPixels=4)
     {
-        _filename = filename;
+        
         ColorDepth = colorDepth;
-        ImageHeight = imageHeight;
-        ImageWidth = imageWidth;
+        SamplePerPixels = samplePerPixels;
+
 
         StreamWriter w = File.AppendText(filename);
         _w = w;
         w.WriteLine($"P3\n{imageWidth} {imageHeight}\n{(int)colorDepth}");
     }
 
-    public void WriteColor(double r, double g, double b)
-    {
-        _w.WriteLine($"{(int)(r * ColorDepth)} {(int)(g * ColorDepth)} {(int)(b * ColorDepth)}");
-    }
+
 
     private double Clamp(double x, double min = 0.00, double max = 0.999)
     {
@@ -101,23 +98,46 @@ public class Renderer
         return x;
     }
 
-    public void WriteColor(Vector a, double SamplesPerPixel)
+
+    private void _writeColor(ref int SamplesPerPixel)
     {
-        //Color/SamplesPerPixel gives the average colour for anti-aliasing
+        foreach (Vector a in cacheList)
+        {
+            //Color/SamplesPerPixel gives the average colour for anti-aliasing
         
-        double scale = 1 / SamplesPerPixel;
-        // using gamma-2 correction
-        double r = Math.Sqrt(scale * a.X);
-        double g = Math.Sqrt(scale * a.Y);
-        double b = Math.Sqrt(scale * a.Z);
+            double scale = 1 / SamplesPerPixel;
+            // using gamma-2 correction
+        
+            double r = Math.Sqrt(scale * a.X);
+            double g = Math.Sqrt(scale * a.Y);
+            double b = Math.Sqrt(scale * a.Z);
+            /*
+            double r = (scale * a.X);
+            double g = (scale * a.Y);
+            double b = (scale * a.Z);
+            */
         
         
-        _w.WriteLine(
-            $"{(int)(Clamp(r) * (int)(ColorDepth+1))} {(int)(Clamp(g) * (int)(ColorDepth+1))} {(int)(Clamp(b) * (int)(ColorDepth+1))}");
+            _w.WriteLine(
+                $"{(int)(Clamp(r) * (int)(ColorDepth+1))} {(int)(Clamp(g) * (int)(ColorDepth+1))} {(int)(Clamp(b) * (int)(ColorDepth+1))}");
+
+        }
+        
+        cacheList.Clear();
+    }
+    public void WriteColor(Vector a)
+    {
+        cacheList.Add(a);
+        if (cacheList.Count > 1000)
+        {
+            _writeColor(ref SamplePerPixels);
+            
+        }
     }
 
     public void Flush()
     {
+        _writeColor(ref SamplePerPixels);
         _w.Flush();
     }
 }

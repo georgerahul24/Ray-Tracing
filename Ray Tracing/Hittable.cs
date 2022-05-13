@@ -2,15 +2,6 @@
 
 namespace Ray_Tracing;
 
-public class Hittable
-
-{
-    public bool Hit(Ray r, double t_min, double t_max, hitrecord rec)
-    {
-        return false;
-    }
-}
-
 public struct hitrecord
 {
     public Vector point;
@@ -18,7 +9,7 @@ public struct hitrecord
     public double t;
     public bool front_face;
 
-    public void set_face_normal(Ray r, Vector outward_normal)
+    public void set_face_normal(ref Ray r, ref Vector outward_normal)
     {
         // if Ray.normal > 0, ray inside the sphere.
         //if Ray.normal < 0, ray outside the sphere.
@@ -29,15 +20,15 @@ public struct hitrecord
     }
 }
 
-class HittableList
+public class HittableList
 {
     private List<Sphere> HitList = new();
 
     public void Add(Sphere o) => HitList.Add(o);
     public void Clear() => HitList.Clear();
 
-    [SuppressMessage("ReSharper.DPA", "DPA0002: Excessive memory allocations in SOH",
-        MessageId = "type: Ray_Tracing.Vector")]
+
+    [SuppressMessage("ReSharper.DPA", "DPA0001: Memory allocation issues")]
     public bool Hit(Ray r, double t_min, double t_max, ref hitrecord rec)
     {
         hitrecord temprec = new();
@@ -45,7 +36,7 @@ class HittableList
         double closest_t = t_max;
         foreach (Sphere obj in HitList)
         {
-            if (obj.Hit(r, t_min, closest_t, ref temprec))
+            if (obj.Hit(r, t_min, t_max: closest_t, ref temprec))
             {
                 hit_anything = true;
                 closest_t = temprec.t;

@@ -1,15 +1,15 @@
 ﻿namespace Ray_Tracing;
 
-public  class Sphere:Hittable
+public  class Sphere
 {
     public Vector center,origin;
     public double radius;
     
-    public Sphere(Vector center, double radius, Vector? orgin = null)
+    public Sphere(Vector center, double radius, Vector? origin = null)
     {
         this.center = center;
         this.radius = radius;
-        this.origin = orgin ?? new Vector(0, 0, 0);
+        this.origin = origin ?? new Vector(0, 0, 0);
     }
     
     public bool Hit(Ray r, double t_min, double t_max, ref hitrecord rec)
@@ -37,7 +37,7 @@ public  class Sphere:Hittable
         rec.point = r.at(rec.t);
         //rec.normal = (rec.point - center) / radius; TODO: is this part needed?
         Vector outward_normal = (rec.point - center) / radius;
-        rec.set_face_normal(r, outward_normal);
+        rec.set_face_normal(ref r, ref outward_normal);
 
         return true;
      
