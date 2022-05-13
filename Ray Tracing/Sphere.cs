@@ -1,7 +1,4 @@
-﻿using System.Diagnostics;
-using System.Runtime.InteropServices;
-
-namespace Ray_Tracing;
+﻿namespace Ray_Tracing;
 
 public  class Sphere:Hittable
 {
@@ -21,7 +18,7 @@ public  class Sphere:Hittable
         
         Vector oc = r.org - center;
         double a = r.dir.LengthSquared();
-        double half_b = VectorOperations.Dot(oc, r.dir);
+        double half_b = VectorTools.Dot(oc, r.dir);
         double c = oc.LengthSquared() - radius*radius;
 
         double discriminant = half_b*half_b - a*c;
