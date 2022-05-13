@@ -2,21 +2,17 @@ using System.Text;
 
 namespace Ray_Tracing;
 
-
-
-
-public static class  RayColor
+public static class RayColor
 {
-    
-    public static Vector Coloured_Normal( Ray r,ref HittableList  scene)
+    public static Vector Coloured_Normal(Ray r, ref HittableList scene)
     {
         hitrecord rec = new();
 
         if (scene.Hit(r, 0, 100, ref rec))
         {
-
             return 0.5 * new Vector(rec.normal.X + 1, rec.normal.Y, rec.normal.Z);
         }
+
         Vector unitDirection = VectorTools.UnitVector(r.dir); // Unit vector between -1 and 1
         double t = 0.5 * (unitDirection.Y + 1.0);
         Color baseColor1 = new(1.0, 1.0, 1.0);
@@ -24,9 +20,7 @@ public static class  RayColor
         // blendedValue=(1−t)⋅startValueColor+t⋅endValueColor,
         return (1.0 - t) * baseColor1 + t * baseColor2;
     }
-}public static class Diffuser_1
-{
-    public static Vector RayColor(Ray r, int depth, ref HittableList scene)
+    public static Vector Diffuser_1(Ray r, int depth, ref HittableList scene)
     {
         hitrecord rec = new();
         if (depth <= 0)
@@ -35,7 +29,7 @@ public static class  RayColor
         if (scene.Hit(r, 0, 100, ref rec))
         {
             Vector target = rec.point + rec.normal + RandomTools.RandomInUnitSphere();
-            return 0.5 * RayColor(new Ray(rec.point, target - rec.point), depth - 1, ref scene);
+            return 0.5 * Diffuser_1(new Ray(rec.point, target - rec.point), depth - 1, ref scene);
         }
 
         Vector unitDirection = VectorTools.UnitVector(r.dir); // Unit vector between -1 and 1
