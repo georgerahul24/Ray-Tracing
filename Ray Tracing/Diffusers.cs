@@ -4,7 +4,9 @@ namespace Ray_Tracing;
 
 public static class RayColor
 {
-    public static Vector Coloured_Normal(Ray r, ref HittableList scene)
+    
+    private static Color baseColor1 = new(1.0, 1.0, 1.0);
+    private static Color baseColor2 = new(0.5, 0.7, 1.0);public static Vector Coloured_Normal(Ray r, ref HittableList scene)
     {
         hitrecord rec = new();
 
@@ -34,9 +36,8 @@ public static class RayColor
 
         Vector unitDirection = VectorTools.UnitVector(r.dir); // Unit vector between -1 and 1
         double t = 0.5 * (unitDirection.Y + 1.0);
-        Color baseColor1 = new(1.0, 1.0, 1.0);
-        Color baseColor2 = new(0.5, 0.7, 1.0);
-        // blendedValue=(1−t)⋅startValueColor+t⋅endValueColor,
+
+        //return new(1, 1, 1);
         return (1.0 - t) * baseColor1 + t * baseColor2;
     }
 }

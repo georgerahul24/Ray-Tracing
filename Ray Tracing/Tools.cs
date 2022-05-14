@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace Ray_Tracing;
 
@@ -73,19 +74,40 @@ public class Renderer
 {
     private StreamWriter _w;
     private double SamplePerPixels;
-    public double ColorDepth;
-   
+    private double ColorDepth;
+    private int numberOfCores;
+    private List<StreamWriter> temp_file_list = new();
 
-    public Renderer(ref string filename, int imageHeight = 256, int imageWidth = 256, double colorDepth = 255.99,double samplePerPixels=4)
+
+    public Renderer(ref string filename, int imageHeight = 256, int imageWidth = 256, double colorDepth = 255.99,
+        double samplePerPixels = 4, int numberOfCores = 1)
     {
-        
         ColorDepth = colorDepth;
         SamplePerPixels = samplePerPixels;
+        this.numberOfCores = numberOfCores;
         StreamWriter w = File.AppendText(filename);
         _w = w;
         w.WriteLine($"P3\n{imageWidth} {imageHeight}\n{(int)colorDepth}");
-    }
+        var dir = new DirectoryInfo(@"Temp");
+        try
+        {
+            
+            dir.Delete(true);
+            
+        }
+        catch
+        {
+        }
+        dir.Create();
+        
 
+        for (int processno = numberOfCores-1; processno>=0; processno--)
+        {
+           
+            temp_file_list.Add(new(@$"Temp\{processno}"));//initialisng the files
+        }
+        
+    }
 
 
     private double Clamp(double x, double min = 0.00, double max = 0.999)
@@ -95,15 +117,24 @@ public class Renderer
         return x;
     }
 
+    private void writeTempFiles(ref int processno, double r, double g, double b)
+    {
+     
+        if (processno < numberOfCores)
+        {
+            temp_file_list[processno].WriteLine(
+                        $"{(int)(Clamp(r) * (int)(ColorDepth + 1))} {(int)(Clamp(g) * (int)(ColorDepth + 1))} {(int)(Clamp(b) * (int)(ColorDepth + 1))}");
 
-    
-    public void WriteColor(Vector a)
+        }
+    }
+
+    public void WriteColor(Vector a, int processnumber)
     {
         //Color/SamplesPerPixel gives the average colour for anti-aliasing
-        
+
         double scale = 1 / SamplePerPixels;
         // using gamma-2 correction
-        
+
         double r = Math.Sqrt(scale * a.X);
         double g = Math.Sqrt(scale * a.Y);
         double b = Math.Sqrt(scale * a.Z);
@@ -112,16 +143,23 @@ public class Renderer
         double g = (scale * a.Y);
         double b = (scale * a.Z);
         */
-        
-        
-        _w.WriteLine(
-            $"{(int)(Clamp(r) * (int)(ColorDepth+1))} {(int)(Clamp(g) * (int)(ColorDepth+1))} {(int)(Clamp(b) * (int)(ColorDepth+1))}");
 
+        writeTempFiles(ref processnumber, r, g, b);
     }
 
     public void Flush()
     {
-        
+        foreach (var tempfile in temp_file_list)
+        {
+            tempfile.Flush();
+            tempfile.Close();
+        }
+
+        for (int i=0; i<=numberOfCores- 1; i++)
+        {
+            _w.Write(File.ReadAllText($"Temp/{i}"));
+        }
+
         _w.Flush();
     }
 }
@@ -150,19 +188,17 @@ public class Color : Vector
     }
 }
 
-public  class RandomTools
+public class RandomTools
 {
-  
     private static Random _random = new();
+
     public static Vector RandomInUnitSphere()
     {
         while (true)
         {
             Vector p = new(_random.Next(-1, 1), _random.Next(-1, 1), _random.Next(-1, 1));
-            if (p.LengthSquared()>=1)continue;
+            if (p.LengthSquared() >= 1) continue;
             return p;
-
-
         }
     }
 }
