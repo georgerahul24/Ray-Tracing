@@ -22,6 +22,26 @@ public static class RayColor
         // blendedValue=(1−t)⋅startValueColor+t⋅endValueColor,
         return (1.0 - t) * baseColor1 + t * baseColor2;
     }
+    
+    public static Vector SimpleColourer(Ray r, ref HittableList scene)
+    {
+        hitrecord rec = new();
+        
+
+        if (scene.Hit(r, 0, 100, ref rec))
+        {
+
+            return new(0, 1, 0);
+        }
+
+        Vector unitDirection = VectorTools.UnitVector(r.dir); // Unit vector between -1 and 1
+        double t = 0.5 * (unitDirection.Y + 1.0);
+
+        //return new(1, 1, 1);
+        return (1.0 - t) * baseColor1 + t * baseColor2;
+    }
+
+    
     public static Vector Diffuser_1(Ray r, int depth, ref HittableList scene)
     {
         hitrecord rec = new();

@@ -1,23 +1,32 @@
-﻿
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Ray_Tracing;
+
 
 
 string file = @"image.ppm";
 const double aspectRatio = 1.778;
-const int imageHeight = 1080;
-const int imageWidth = (int)(imageHeight * aspectRatio);
-const double sampleSize = 10;
-const int maxDepth = 4;
-const int numberOfCores = 4;
+Console.Write("Enter Resolution: ");
+int imageHeight = Convert.ToInt32(Console.ReadLine());
+int imageWidth = (int)(imageHeight * aspectRatio);
+Console.Write("Enter Sample Size: ");
+double sampleSize = Convert.ToDouble(Console.ReadLine());
+Console.Write("Enter Max Depth For the Rays: ");
+int maxDepth = Convert.ToInt32(Console.ReadLine());
+Console.Write("Enter the number of Cores to be used: ");
+int numberOfCores = Convert.ToInt32(Console.ReadLine());
 List<Thread> process = new();
 File.Delete(file);
 Renderer w = new(ref file, imageHeight, imageWidth, 255.99,sampleSize,numberOfCores);
 HittableList scene = new();
-scene.Add(new Sphere(new Vector(0, 0, -1), 0.3));
 
+scene.Add(new Sphere(new Vector(0, 0, -1), 0.25));
+scene.Add(new Sphere(new Vector(0, -0.4, -1), 0.1));
+scene.Add(new Sphere(new Vector(0, 0.4, -1), 0.1));
+scene.Add(new Sphere(new Vector(-0.4, 0, -1), 0.1));
+scene.Add(new Sphere(new Vector(0.4, 0, -1), 0.1));
+/*
 scene.Add(new Sphere(new Vector(0, -100.5, -1), 100));
-
+*/
 
 
 Random random = new Random();
@@ -43,28 +52,32 @@ void Main1()
 
                 pixelColor += RayColor.Diffuser_1(cam.GetRay(ref u, ref v), maxDepth, ref scene);
 
+                //ScreenRenderer.Paint(u,v,RayColor.Coloured_Normal(cam.GetRay(ref u,ref v),ref scene));
                 //w.WriteColor(RayColor.Coloured_Normal(cam.GetRay(ref u,ref v),ref scene));
+                
             }
 
             w.WriteColor(pixelColor,(int)processno);
+            
+            
+
 
         }
-        
+       
     }
     Console.WriteLine($"Process Completed: {processno}");
     
 }
 
 
-int processno = 0;
-while (processno < numberOfCores)
+for (int p=0;p < numberOfCores;p++)
 
 {
     
     Thread t = new Thread((Main1));
     t.Start();
     process.Add(t);
-    processno++;
+  
 }
 
 
