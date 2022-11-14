@@ -4,7 +4,7 @@ IMAGENAME=image.ppm
 output:	main.o
 	g++ main.o -o $(OUTPUTNAME);
 
-main.o:	main.cpp
+main.o:	main.cpp FileWriter.h Renderer.h
 	g++ -c main.cpp
 
 target:	dependencies
@@ -14,4 +14,4 @@ clean:
 	rm *.o RayTracing $(IMAGENAME);
 
 run:
-	make && ./$(OUTPUTNAME) > $(IMAGENAME)
+	make && ./$(OUTPUTNAME)
