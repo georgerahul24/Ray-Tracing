@@ -1,17 +1,17 @@
-OUTPUTNAME=RayTracing
-IMAGENAME=image.ppm
+OUTPUTNAME = bin/RayTracing
+IMAGENAME = image.ppm
 
-output:	main.o
-	g++ main.o -o $(OUTPUTNAME);
+output:	bin/main.o
+	g++ -std=c++17 -Ofast bin/main.o -o $(OUTPUTNAME);
 
-main.o:	main.cpp FileWriter.h Renderer.h
-	g++ -c main.cpp
+bin/main.o:	main.cpp Renderer.h
+	g++ -std=c++17 -c main.cpp -o bin/main.o
 
 target:	dependencies
 	action
 
 clean:
-	rm *.o RayTracing $(IMAGENAME);
+	rm bin/*.o bin/RayTracing $(IMAGENAME);
 
 run:
 	make && ./$(OUTPUTNAME)
