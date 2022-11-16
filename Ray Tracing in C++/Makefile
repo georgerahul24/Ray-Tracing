@@ -20,7 +20,7 @@ target:	dependencies
 	action
 
 clean:
-	rm bin/*.o test/*.o  test/test bin/RayTracing $(IMAGENAME);
+	rm bin/*.o test/*.o  test/test_main bin/RayTracing $(IMAGENAME);
 
 run:
 	make && ./$(OUTPUTNAME)
@@ -28,9 +28,9 @@ run:
 testclean:
 		rm test/*.o test/test
 
-test/main.o: test/main.cpp
-	g++ -std=c++17 -c test/main.cpp -o test/main.o
+test/test_main.o: test/test_main.cpp test/test_Vec3.h
+	g++ -std=c++17 -c test/test_main.cpp -o test/test_main.o
 
-test: test/main.o
-	g++ -std=c++17  src/Vec3.cpp test/main.o -o test/test && ./test/test;
+test: test/test_main.o
+	g++ -std=c++17  src/Vec3.cpp test/test_main.o -o test/test_main && ./test/test_main;
 		
