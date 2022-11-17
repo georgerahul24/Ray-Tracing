@@ -48,9 +48,7 @@ double Vec3::length_squared(){
 
 
 
-// Type aliases for vec3
-using point3 = Vec3;   // 3D point
-using color = Vec3;    // RGB colorcl
+
 
 
 

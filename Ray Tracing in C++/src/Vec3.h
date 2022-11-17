@@ -2,12 +2,9 @@
 
 #include <cmath>
 #include <iostream>
-#include "FileWriter.h"
+
 
 class Vec3{
-
-	
-	
 public:
 	double e[3];
 	Vec3();
@@ -73,11 +70,15 @@ inline double dot(const Vec3& u,const Vec3& v){
 	return (u.e[0]*v.e[0]) + (u.e[1]*v.e[1]) + (u.e[2]*v.e[2]);
 }
 
-inline Vec3 unit_vector(Vec3& v ){
+inline Vec3 unit_vector(Vec3 v ){
+	//TODO: Figure out why we cant do (Vec3& v) in the parameter list
 	return v/v.length();
 }
 
 
+// Type aliases for vec3
+using Point3 = Vec3;   // 3D point
+using Color = Vec3;    // RGB colorcl
 
 
 
