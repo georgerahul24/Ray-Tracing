@@ -7,7 +7,7 @@ output:	bin/main.o bin/Renderer.o bin/Vec3.o
 bin/main.o: main.cpp
 	g++ -std=c++17 -c main.cpp -o bin/main.o
 
-bin/Renderer.o:	src/Renderer.h src/Renderer.cpp src/FileWriter.h src/Ray.h src/Camera.h src/Vec3.h
+bin/Renderer.o:	src/Renderer.h src/Renderer.cpp src/FileWriter.h src/Ray.h src/Camera.h src/Vec3.h src/shaders/Sphere.h
 	g++ -std=c++17 -c src/Renderer.cpp -o bin/Renderer.o
 
 
