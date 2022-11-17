@@ -4,7 +4,7 @@ IMAGENAME = image.ppm
 output:	bin/main.o bin/Renderer.o bin/Vec3.o
 	g++ -std=c++17 -Ofast bin/Vec3.o bin/main.o bin/Renderer.o -o $(OUTPUTNAME);
 
-bin/main.o:	main.cpp
+bin/main.o: main.cpp
 	g++ -std=c++17 -c main.cpp -o bin/main.o
 
 bin/Renderer.o:	src/Renderer.h src/Renderer.cpp src/FileWriter.h src/Ray.h src/Camera.h src/Vec3.h
@@ -12,7 +12,7 @@ bin/Renderer.o:	src/Renderer.h src/Renderer.cpp src/FileWriter.h src/Ray.h src/C
 
 
 
-bin/Vec3.o:	src/Vec3.cpp
+bin/Vec3.o: src/Vec3.cpp
 	g++ -std=c++17 -c src/Vec3.cpp -o bin/Vec3.o
 
 
@@ -23,7 +23,7 @@ clean:
 	rm bin/*.o test/*.o  test/test_main bin/RayTracing $(IMAGENAME);
 
 run:
-	make && ./$(OUTPUTNAME)
+	make && ./$(OUTPUTNAME) && open ./$(IMAGENAME)
 
 testclean:
 		rm test/*.o test/test

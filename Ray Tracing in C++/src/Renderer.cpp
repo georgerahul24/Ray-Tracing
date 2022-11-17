@@ -1,8 +1,14 @@
 #include "Renderer.h"
-Renderer::Renderer(int* image_width):file_writer("image.ppm"){
+#include <iostream>
+
+Renderer::Renderer(int image_width):file_writer("image.ppm"){
 	
-	Renderer::image_width = *image_width;
-	Renderer::image_height = static_cast<int>(*image_width/aspect_ratio);
+	
+	Renderer::image_height = static_cast<int>(image_width/aspect_ratio);
+	Renderer::image_width = image_width;
+	
+	std::cout << 'a'<<Renderer::image_height <<'c' <<Renderer::image_width << "b\n";
+	
 	
 	file_writer.file << "P3\n" << Renderer::image_width<<" "<<Renderer::image_height<<"\n256\n"; //Writing the image types
 }
@@ -19,9 +25,7 @@ void Renderer::start(){
 		Color pixel_color=camera.colorise(i,j);
 		
 		file_writer.WriteColor(pixel_color);   
-	  	
-	  
-	  
+
 	  }
 	std::cerr<<'\r';
 

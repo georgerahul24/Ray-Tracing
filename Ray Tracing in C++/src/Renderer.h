@@ -14,7 +14,7 @@ private:
 	 const double aspect_ratio=16.0/9.0;
 	 FileWriter file_writer;
 public:
-	Renderer(int* image_width);
+	Renderer(int image_width);
 	void start();
 			
 };

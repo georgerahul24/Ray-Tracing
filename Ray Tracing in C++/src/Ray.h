@@ -10,11 +10,11 @@ public:
 	
 	Ray(const Point3& origin, const Vec3& direction):orig(origin),dir(direction){}
 	
-	Point3 origin(){
+	Point3 origin() const{
 		return orig;
 	}
 	
-	Vec3 direction(){
+	Vec3 direction()const{
 		return dir;		
 	}
 	
