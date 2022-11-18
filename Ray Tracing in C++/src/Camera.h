@@ -2,6 +2,7 @@
 #include "World.h"
 #include "shaders/Sky.h"
 #include "shaders/Sphere.h"
+#include "Hittable.h"
 
 class Camera{
 public:

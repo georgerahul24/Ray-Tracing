@@ -1,8 +1,5 @@
 #include "Camera.h"
 
-#include "shaders/Sky.h"
-#include "shaders/Sphere.h"
-#include "Hittable.h"
 Camera::Camera(const int& image_width,const int& image_height,const double& aspect_ratio,World& world){
 	Camera::image_width=image_width;
 	Camera::image_height=image_height;

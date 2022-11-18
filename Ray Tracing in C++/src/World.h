@@ -13,7 +13,7 @@ public:
 		world.Add(make_shared<Sphere>(Point3(0,0,-1),0.5));
 		
 		
-		world.Add(make_shared<Sphere>(Point3(0.2,0.4,-1),0.3));
+		world.Add(make_shared<Sphere>(Point3(0,-100,-1),100));
 	};
 
 	
