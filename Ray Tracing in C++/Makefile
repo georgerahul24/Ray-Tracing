@@ -7,10 +7,13 @@ output:	bin/main.o bin/Renderer.o bin/Vec3.o bin/Camera.o
 bin/main.o: main.cpp
 	g++ -std=c++17 -c main.cpp -o bin/main.o
 
-bin/Renderer.o:	src/Renderer.h src/Renderer.cpp src/FileWriter.h
+bin/Renderer.o:	src/Renderer.h src/Renderer.cpp src/FileWriter.h src/World.h
 	g++ -std=c++17 -c src/Renderer.cpp -o bin/Renderer.o
 
-bin/Camera.o:	src/Camera.h src/Camera.cpp src/shaders/*.h src/Hittable.h
+
+
+
+bin/Camera.o:	src/Camera.h src/Camera.cpp src/shaders/*.h src/Hittable.h src/World.h
 	g++ -std=c++17 -c src/Camera.cpp -o bin/Camera.o
 
 bin/Vec3.o: src/Vec3.cpp

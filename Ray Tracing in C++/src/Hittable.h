@@ -1,11 +1,6 @@
 #pragma once 
-
 #include "Ray.h"
-#include <memory>
-#include <vector>
 
-using std::shared_ptr;
-using make_shared;
 
 struct hit_record{
 	Point3 p;
@@ -21,6 +16,15 @@ struct hit_record{
 	
 	
 };
+
+
+
+
+
+
+
+
+
 
 
 class Hittable{

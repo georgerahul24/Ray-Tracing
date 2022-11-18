@@ -4,7 +4,7 @@
 #include "../Vec3.h"
 #include "../Ray.h"
 
-class Sphere{
+class Sphere:public Hittable{
 public:	
 	Point3 center;
 	double radius;
@@ -12,7 +12,7 @@ public:
 	Sphere(Point3 cen,double r):center(cen),radius(r){};
 	
 	
-	bool Hit(const Ray& r, double t_min,double t_max, hit_record& rec ) const {
+	bool Hit(const Ray& r, double t_min,double t_max, hit_record& rec ) const override {
 		Vec3 oc = r.origin()-center;
 		double a=r.direction().length_squared();
 		double half_b=dot(oc,r.direction());
