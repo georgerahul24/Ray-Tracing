@@ -18,7 +18,7 @@ public:
 		return dir;		
 	}
 	
-	Point3 at(const double& term){
+	Point3 at(const double& term) const{
 		return orig + term*dir;
 	}
 	

@@ -11,7 +11,7 @@ public:
 	const double focal_length = 1.0;
 	const Point3 origin{0, 0, 0};
 	Vec3 horizontal,vertical,lower_left_corner;
-	Sphere sphere;
+	
 	Sky sky;
 	
 	

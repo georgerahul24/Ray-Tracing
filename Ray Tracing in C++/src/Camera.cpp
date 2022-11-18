@@ -2,7 +2,7 @@
 
 #include "shaders/Sky.h"
 #include "shaders/Sphere.h"
-
+#include "Hittable.h"
 Camera::Camera(const int& image_width,const int& image_height,const double& aspect_ratio){
 	Camera::image_width=image_width;
 	Camera::image_height=image_height;
@@ -17,11 +17,11 @@ Color Camera::colorise(const int& i,const int& j){
 	double u = double(i) / (image_width-1);
 	double v = double(j) / (image_height-1);
 	Ray r(origin, lower_left_corner + u*horizontal + v*vertical - origin);
-	
-	double t=sphere.Hit(Point3(0,0,-1), 0.5, r); //See the point of intersection
-	if (t>0.00){//This means there is a collision
-		Vec3 N=unit_vector(r.at(t)-Vec3(0,0,-1));
-		return 0.5*Color(N.x()+1,N.y()+1,N.z()+1);
+	Sphere sphere(Point3(0,0,-1),0.5);
+	hit_record rec;
+	if (sphere.Hit(r,0,10000,rec)){//This means there is a collision
+		
+		return 0.5* (rec.normal+Color(1,1,1));
 	}
 	else{
 		return sky.Hit(r);
