@@ -1,11 +1,25 @@
 #pragma once 
 
 #include "Ray.h"
+#include <memory>
+#include <vector>
+
+using std::shared_ptr;
+using make_shared;
 
 struct hit_record{
 	Point3 p;
 	Vec3 normal;
 	double t;
+	bool front_face; //to check if the normal is out/inside the object
+	
+	inline void set_face_normal(const Ray& r,Vec3& outward_normal){
+		front_face=dot(r.direction(),outward_normal)>0;
+		normal= front_face? outward_normal: - outward_normal; //to make sure that always the normal point outwards
+	}
+	
+	
+	
 };
 
 
