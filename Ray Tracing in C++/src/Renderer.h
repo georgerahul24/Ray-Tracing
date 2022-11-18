@@ -1,8 +1,7 @@
 #pragma once
 
 #include "FileWriter.h"
-#include "Ray.h"
-#include "Vec3.h"
+
 #include "Camera.h"
 
 
