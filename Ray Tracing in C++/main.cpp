@@ -2,7 +2,6 @@
 #include "src/Renderer.h"
 
 
-
 int main(){
   int image_height=480;
  

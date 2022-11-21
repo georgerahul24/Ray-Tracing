@@ -12,8 +12,8 @@ Camera::Camera(const int& image_width,const int& image_height,const double& aspe
 }
 
 Color Camera::colorise(const int& i,const int& j){
-	double u = double(i) / (image_width-1);
-	double v = double(j) / (image_height-1);
+	double u = double(i+random_double()) / (image_width-1);
+	double v = double(j+random_double()) / (image_height-1);
 	Ray r(origin, lower_left_corner + u*horizontal + v*vertical - origin);
 	
 	hit_record rec;

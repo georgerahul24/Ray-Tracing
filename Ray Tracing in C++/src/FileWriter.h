@@ -30,7 +30,11 @@ private:
 			 file<<str;
 		 }
 		 
-		 void WriteColor(Vec3& color){
+		 void WriteColor(Vec3& color,int& samples_per_pixel){
+			 
+			 color = color/samples_per_pixel;
+			 
+			 
 			 file<<static_cast<int>(colormult*color[0]) << " " << static_cast<int>(colormult*color[1]) << " " << static_cast<int>(colormult*color[2]) << "\n"; 
 		 }
 		 

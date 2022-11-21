@@ -3,7 +3,7 @@
 #include "shaders/Sky.h"
 #include "shaders/Sphere.h"
 #include "Hittable.h"
-
+#include "Tools.h"
 class Camera{
 public:
 	int image_width,image_height,aspect_ratio;

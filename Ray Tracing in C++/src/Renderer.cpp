@@ -15,10 +15,14 @@ for (int j = image_height-1; j >= 0; --j)
 	std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
 	for (int i = 0; i < image_width; ++i) 
 	{
+		Color pixel_color = Color(0,0,0);
+		for (int s=0;s<samples_per_pixel;++s){
+			pixel_color += camera.colorise(i,j);
+		}
 		
-		Color pixel_color=camera.colorise(i,j);
+		
 
-		file_writer.WriteColor(pixel_color);
+		file_writer.WriteColor(pixel_color,samples_per_pixel);
 
 
 	}
