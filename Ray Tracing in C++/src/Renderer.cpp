@@ -17,7 +17,7 @@ for (int j = image_height-1; j >= 0; --j)
 	{
 		Color pixel_color = Color(0,0,0);
 		for (int s=0;s<samples_per_pixel;++s){
-			pixel_color += camera.colorise(i,j);
+			pixel_color += camera.colorise(i,j,max_depth);
 		}
 		
 		

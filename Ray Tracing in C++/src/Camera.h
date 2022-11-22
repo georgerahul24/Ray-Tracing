@@ -18,5 +18,9 @@ public:
 	
 	
 	Camera(const int& image_width,const int& image_height,const double& aspect_ratio,World& world);
-	Color colorise(const int& i,const int& j);
+	Color colorise(const int& i,const int& j,int depth);
+	
+private:
+	Color ray_color(int depth,const  Ray& r);	
+	
 };

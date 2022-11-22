@@ -1,5 +1,5 @@
 #pragma once
-
+#include  "Tools.h"
 #include <cmath>
 #include <iostream>
 
@@ -36,8 +36,12 @@ inline std::ostream& operator<<(std::ostream &out, const Vec3 &v){
 }
 
 
+
+
+
+
 inline Vec3 operator+(const Vec3 &u, const Vec3&v){
-	return Vec3(u.e[0]+v.e[0], u.e[1]+v.e[1], u.e[2]+v.e[2]);
+	return {u.e[0]+v.e[0], u.e[1]+v.e[1], u.e[2]+v.e[2]};
 }
 
 inline Vec3 operator-(const Vec3 &u, const Vec3&v){
@@ -73,6 +77,21 @@ inline double dot(const Vec3& u,const Vec3& v){
 inline Vec3 unit_vector(Vec3 v ){
 	//TODO: Figure out why we cant do (Vec3& v) in the parameter list
 	return v/v.length();
+}
+
+
+inline static Vec3 random(double min, double max){
+
+    return {random_double(min,max),random_double(min,max),random_double(min,max)};
+}
+
+
+inline Vec3 random_in_unit_sphere() {
+    while (true) {
+        Vec3 p = random(-1, 1);
+        if (p.length_squared() >= 1) continue;
+        return p;
+    }
 }
 
 

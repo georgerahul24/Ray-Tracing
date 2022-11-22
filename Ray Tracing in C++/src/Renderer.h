@@ -11,7 +11,8 @@ public:
 	int image_height,image_width;
 	FileWriter file_writer;	
 	World world;
-	int samples_per_pixel = 30;
+	int samples_per_pixel = 2;
+	int max_depth=3;
 	
 	
 	

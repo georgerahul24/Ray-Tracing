@@ -11,18 +11,35 @@ Camera::Camera(const int& image_width,const int& image_height,const double& aspe
 	Camera::world = world;
 }
 
-Color Camera::colorise(const int& i,const int& j){
+Color Camera::colorise(const int& i,const int& j,int depth){
 	double u = double(i+random_double()) / (image_width-1);
 	double v = double(j+random_double()) / (image_height-1);
 	Ray r(origin, lower_left_corner + u*horizontal + v*vertical - origin);
 	
+	
+	return ray_color(depth,r);
+	
+	
+	
+	
+	
+
+}
+
+
+Color Camera::ray_color(int depth,const Ray& r){
 	hit_record rec;
-	if (world.world.Hit(r,0,10000,rec)){//This means there is a collision
-		
-		return 0.5* (rec.normal+Color(1,1,1));
+	
+	if (depth<=0){
+		return Color(0,0,0);
+	}
+
+	if (world.world.Hit(r,0,infinity,rec)){//This means there is a collision
+		Point3 target= rec.p+rec.normal+random_in_unit_sphere();
+		return 0.5* ray_color(depth-1,Ray(rec.p,target - rec.p));
 	}
 	else{
 		return sky.Hit(r);
 	}
-
+	
 }

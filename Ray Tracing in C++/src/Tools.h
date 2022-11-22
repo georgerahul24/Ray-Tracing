@@ -1,8 +1,8 @@
 #pragma once 
-
 #include <cmath>
 #include <limits>
 #include <cstdlib>
+
 //constants
 
 const double infinity = std::numeric_limits<double>::infinity();
@@ -13,6 +13,8 @@ const double pi = 3.1415926535897932384626433832795028841971;
 inline double degrees_to_radians(double degrees){
 	return degrees*pi/180.0;
 }
+
+
 
 inline double random_double(){
 	//returns a random value btw 0 and 1
@@ -28,3 +30,10 @@ inline double clamp(double x,double min,double max){
 	if (x>max) return max;
 	return x;
 }
+
+
+
+
+
+
+
